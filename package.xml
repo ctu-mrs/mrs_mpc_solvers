@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+
+  <name>mrs_mpc_solvers</name>
+  <version>1.0.0</version>
+  <description>The mpc_solvers package</description>
+
+  <author email="tomas.baca@fel.cvut.cz">Tomas Baca</author>
+  <maintainer email="tomas.baca@fel.cvut.cz">Tomas Baca</maintainer>
+
+  <license>BSD 3-Clause</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+
+</package>
