@@ -22,6 +22,8 @@ SettingsController  settingsController;
 
 /* class Solver() //{ */
 
+std::mutex Solver::mutex_main_;
+
 Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double> Q, std::vector<double> Q_last, double dt1, double dt2, double p1, double p2) {
 
   this->_name_ = name;
