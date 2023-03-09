@@ -234,6 +234,21 @@ double Solver::getFirstControlInput() {
 
 //}
 
+/* setDt() //{ */
+
+void Solver::setDt(const double& new_dt) {
+
+  params.Af[4] = new_dt;
+  params.Af[5] = new_dt;
+  params.Af[6] = new_dt;
+  params.Af[7] = 0.5 * new_dt * new_dt;
+  params.Af[8] = 0.5 * new_dt * new_dt;
+
+  params.Bf[0] = new_dt;
+}
+
+//}
+
 }  // namespace mpc_tracker
 
 }  // namespace mrs_mpc_solvers
