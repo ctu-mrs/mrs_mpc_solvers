@@ -1,14 +1,11 @@
-/* Produced by CVXGEN, 2019-06-11 03:54:17 -0400.  */
-/* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
-/* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
-/* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
-/* applications without prior written permission from Jacob Mattingley. */
+#include <mrs_mpc_solvers/controller/solver/solver.h>
 
-/* Filename: ldl.c. */
-/* Description: Basic test harness for solver.c. */
-#include "solver.h"
+namespace mrs_mpc_solvers {
+
+namespace mpc_controller {
+
 /* Be sure to place ldl_solve first, so storage schemes are defined by it. */
-void ldl_solve_controller(double *target, double *var) {
+void QPSolver::ldl_solve_controller(double *target, double *var) {
   int i;
   /* Find var = (L*diag(workController.d)*L') \ target, then unpermute. */
   /* Answer goes into var. */
@@ -2755,7 +2752,8 @@ void ldl_solve_controller(double *target, double *var) {
   }
 #endif
 }
-void ldl_factor_controller(void) {
+
+void QPSolver::ldl_factor_controller(void) {
   workController.d[0] = workController.KKT[0];
   if (workController.d[0] < 0)
     workController.d[0] = settingsController.kkt_reg;
@@ -12269,7 +12267,8 @@ void ldl_factor_controller(void) {
   }
 #endif
 }
-double check_factorization_controller(void) {
+
+double QPSolver::check_factorization_controller(void) {
   /* Returns the squared Frobenius norm of A - L*D*L'. */
   double temp, residual;
   /* Only check the lower triangle. */
@@ -15902,7 +15901,8 @@ double check_factorization_controller(void) {
   residual += temp*temp;
   return residual;
 }
-void matrix_multiply_controller(double *result, double *source) {
+
+void QPSolver::matrix_multiply_controller(double *result, double *source) {
   /* Finds result = A*source. */
   result[0] = workController.KKT[631]*source[520]+workController.KKT[632]*source[521]+workController.KKT[633]*source[522];
   result[1] = workController.KKT[639]*source[523]+workController.KKT[640]*source[524]+workController.KKT[641]*source[525];
@@ -16815,7 +16815,8 @@ void matrix_multiply_controller(double *result, double *source) {
   result[908] = workController.KKT[1524]*source[203]+workController.KKT[1523]*source[204]+workController.KKT[1305]*source[206];
   result[909] = workController.KKT[1516]*source[129]+workController.KKT[1525]*source[204]+workController.KKT[1515]*source[207];
 }
-double check_residual_controller(double *target, double *multiplicand) {
+
+double QPSolver::check_residual_controller(double *target, double *multiplicand) {
   /* Returns the squared 2-norm of lhs - A*rhs. */
   /* Reuses v to find the residual. */
   int i;
@@ -16827,7 +16828,8 @@ double check_residual_controller(double *target, double *multiplicand) {
   }
   return residual;
 }
-void fill_KKT_controller(void) {
+
+void QPSolver::fill_KKT_controller(void) {
   workController.KKT[626] = 2*paramsController.Q[0];
   workController.KKT[1526] = 2*paramsController.Q[1];
   workController.KKT[1620] = 2*paramsController.Q[2];
@@ -18641,4 +18643,8 @@ void fill_KKT_controller(void) {
   workController.KKT[629] = 1;
   workController.KKT[1305] = 1;
   workController.KKT[1515] = 1;
+}
+
+}
+
 }

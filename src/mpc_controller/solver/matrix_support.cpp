@@ -1,13 +1,10 @@
-/* Produced by CVXGEN, 2019-06-11 03:54:31 -0400.  */
-/* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
-/* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
-/* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
-/* applications without prior written permission from Jacob Mattingley. */
+#include <mrs_mpc_solvers/controller/solver/solver.h>
 
-/* Filename: matrix_support.c. */
-/* Description: Support functions for matrix multiplication and vector filling. */
-#include "solver.h"
-void multbymA_controller(double *lhs, double *rhs) {
+namespace mrs_mpc_solvers {
+
+namespace mpc_controller {
+
+void QPSolver::multbymA_controller(double *lhs, double *rhs) {
   lhs[0] = -rhs[130]*(1);
   lhs[1] = -rhs[131]*(1);
   lhs[2] = -rhs[104]*(-paramsController.Bf[0])-rhs[132]*(1);
@@ -87,7 +84,8 @@ void multbymA_controller(double *lhs, double *rhs) {
   lhs[76] = -rhs[203]*(-paramsController.A[1])-rhs[204]*(-paramsController.A[4])-rhs[206]*(1);
   lhs[77] = -rhs[129]*(-paramsController.B[0])-rhs[204]*(-paramsController.A[2])-rhs[207]*(1);
 }
-void multbymAT_controller(double *lhs, double *rhs) {
+
+void QPSolver::multbymAT_controller(double *lhs, double *rhs) {
   lhs[0] = 0;
   lhs[1] = 0;
   lhs[2] = 0;
@@ -297,7 +295,8 @@ void multbymAT_controller(double *lhs, double *rhs) {
   lhs[206] = -rhs[76]*(1);
   lhs[207] = -rhs[77]*(1);
 }
-void multbymG_controller(double *lhs, double *rhs) {
+
+void QPSolver::multbymG_controller(double *lhs, double *rhs) {
   lhs[0] = -rhs[0]*(1);
   lhs[1] = -rhs[0]*(-1)-rhs[104]*(1);
   lhs[2] = -rhs[0]*(-1)-rhs[104]*(-1);
@@ -611,7 +610,8 @@ void multbymG_controller(double *lhs, double *rhs) {
   lhs[310] = -rhs[103]*(-1)-rhs[207]*(1);
   lhs[311] = -rhs[103]*(-1)-rhs[207]*(-1);
 }
-void multbymGT_controller(double *lhs, double *rhs) {
+
+void QPSolver::multbymGT_controller(double *lhs, double *rhs) {
   lhs[0] = -rhs[0]*(1)-rhs[1]*(-1)-rhs[2]*(-1);
   lhs[1] = -rhs[3]*(1)-rhs[4]*(-1)-rhs[5]*(-1);
   lhs[2] = -rhs[6]*(1)-rhs[7]*(-1)-rhs[8]*(-1);
@@ -821,7 +821,8 @@ void multbymGT_controller(double *lhs, double *rhs) {
   lhs[206] = -rhs[232]*(1)-rhs[233]*(-1);
   lhs[207] = -rhs[310]*(1)-rhs[311]*(-1);
 }
-void multbyP_controller(double *lhs, double *rhs) {
+
+void QPSolver::multbyP_controller(double *lhs, double *rhs) {
   /* TODO use the fact that P is symmetric? */
   /* TODO check doubling / half factor etc. */
   lhs[0] = 0;
@@ -1033,7 +1034,8 @@ void multbyP_controller(double *lhs, double *rhs) {
   lhs[206] = rhs[206]*(2*paramsController.Q_last[1]);
   lhs[207] = rhs[207]*(2*paramsController.Q_last[2]);
 }
-void fillq_controller(void) {
+
+void QPSolver::fillq_controller(void) {
   workController.q[0] = 0;
   workController.q[1] = 0;
   workController.q[2] = 0;
@@ -1243,7 +1245,8 @@ void fillq_controller(void) {
   workController.q[206] = -2*paramsController.Q_last[1]*paramsController.x_ss_26[1];
   workController.q[207] = -2*paramsController.Q_last[2]*paramsController.x_ss_26[2];
 }
-void fillh_controller(void) {
+
+void QPSolver::fillh_controller(void) {
   workController.h[0] = paramsController.u_max[0];
   workController.h[1] = 0;
   workController.h[2] = 0;
@@ -1557,7 +1560,8 @@ void fillh_controller(void) {
   workController.h[310] = 0;
   workController.h[311] = 0;
 }
-void fillb_controller(void) {
+
+void QPSolver::fillb_controller(void) {
   workController.b[0] = paramsController.Af[0]*paramsController.x_0[0]+paramsController.Af[3]*paramsController.x_0[1];
   workController.b[1] = paramsController.Af[1]*paramsController.x_0[1]+paramsController.Af[4]*paramsController.x_0[2];
   workController.b[2] = paramsController.Af[2]*paramsController.x_0[2];
@@ -1637,7 +1641,8 @@ void fillb_controller(void) {
   workController.b[76] = 0;
   workController.b[77] = 0;
 }
-void pre_ops_controller(void) {
+
+void QPSolver::pre_ops_controller(void) {
   workController.quad_600568381440[0] = paramsController.x_ss_1[0]*paramsController.Q[0]*paramsController.x_ss_1[0]+paramsController.x_ss_1[1]*paramsController.Q[1]*paramsController.x_ss_1[1]+paramsController.x_ss_1[2]*paramsController.Q[2]*paramsController.x_ss_1[2];
   workController.quad_898851794944[0] = paramsController.x_ss_2[0]*paramsController.Q[0]*paramsController.x_ss_2[0]+paramsController.x_ss_2[1]*paramsController.Q[1]*paramsController.x_ss_2[1]+paramsController.x_ss_2[2]*paramsController.Q[2]*paramsController.x_ss_2[2];
   workController.quad_88433618944[0] = paramsController.x_ss_3[0]*paramsController.Q[0]*paramsController.x_ss_3[0]+paramsController.x_ss_3[1]*paramsController.Q[1]*paramsController.x_ss_3[1]+paramsController.x_ss_3[2]*paramsController.Q[2]*paramsController.x_ss_3[2];
@@ -1664,4 +1669,8 @@ void pre_ops_controller(void) {
   workController.quad_392524365824[0] = paramsController.x_ss_24[0]*paramsController.Q[0]*paramsController.x_ss_24[0]+paramsController.x_ss_24[1]*paramsController.Q[1]*paramsController.x_ss_24[1]+paramsController.x_ss_24[2]*paramsController.Q[2]*paramsController.x_ss_24[2];
   workController.quad_653656117248[0] = paramsController.x_ss_25[0]*paramsController.Q[0]*paramsController.x_ss_25[0]+paramsController.x_ss_25[1]*paramsController.Q[1]*paramsController.x_ss_25[1]+paramsController.x_ss_25[2]*paramsController.Q[2]*paramsController.x_ss_25[2];
   workController.quad_758104227840[0] = paramsController.x_ss_26[0]*paramsController.Q_last[0]*paramsController.x_ss_26[0]+paramsController.x_ss_26[1]*paramsController.Q_last[1]*paramsController.x_ss_26[1]+paramsController.x_ss_26[2]*paramsController.Q_last[2]*paramsController.x_ss_26[2];
+}
+
+}
+
 }
