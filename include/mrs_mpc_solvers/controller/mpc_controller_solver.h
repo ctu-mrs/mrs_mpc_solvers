@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <eigen3/Eigen/Eigen>
-#include "solver/solver.h"
+#include <mutex>
 
 namespace mrs_mpc_solvers
 {
@@ -32,8 +32,6 @@ public:
 
 private:
 
-  QPSolver qp_solver_;
-
   std::string _name_;
 
   std::vector<double> Q_;
@@ -47,6 +45,8 @@ private:
   int    vel_q_persistent_;
   bool   _verbose_;
   int    _max_iters_;
+
+  static std::mutex mutex_main_;
 };
 
 }  // namespace mpc_controller
