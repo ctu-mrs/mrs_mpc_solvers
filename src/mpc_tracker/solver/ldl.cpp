@@ -6,14 +6,14 @@
 
 /* Filename: ldl.c. */
 /* Description: Basic test harness for solver.c. */
-#include "solver.h"
+#include <mrs_mpc_solvers/tracker/solver/solver.h>
 
 namespace mrs_mpc_solvers {
 
-namespace tracker {
+namespace mpc_tracker {
 
 /* Be sure to place ldl_solve first, so storage schemes are defined by it. */
-void Solver::ldl_solve(double *target, double *var) {
+void QPSolver::ldl_solve(double *target, double *var) {
   int i;
   /* Find var = (L*diag(work.d)*L') \ target, then unpermute. */
   /* Answer goes into var. */
@@ -3031,7 +3031,7 @@ void Solver::ldl_solve(double *target, double *var) {
 #endif
 }
 
-void Solver::ldl_factor(void) {
+void QPSolver::ldl_factor(void) {
   work.d[0] = work.KKT[0];
   if (work.d[0] < 0)
     work.d[0] = settings.kkt_reg;
@@ -13478,7 +13478,7 @@ void Solver::ldl_factor(void) {
 #endif
 }
 
-double check_factorization(void) {
+double QPSolver::check_factorization(void) {
   /* Returns the squared Frobenius norm of A - L*D*L'. */
   double temp, residual;
   /* Only check the lower triangle. */
@@ -17468,7 +17468,7 @@ double check_factorization(void) {
   return residual;
 }
 
-void Solver::matrix_multiply(double *result, double *source) {
+void QPSolver::matrix_multiply(double *result, double *source) {
   /* Finds result = A*source. */
   result[0] = work.KKT[1134]*source[760]+work.KKT[1136]*source[800]+work.KKT[1137]*source[843];
   result[1] = work.KKT[1140]*source[761]+work.KKT[1142]*source[801]+work.KKT[1143]*source[847];
@@ -18472,7 +18472,7 @@ void Solver::matrix_multiply(double *result, double *source) {
   result[999] = work.KKT[1333]*source[39]+work.KKT[1334]*source[195]+work.KKT[1132]*source[199];
 }
 
-double Solver::check_residual(double *target, double *multiplicand) {
+double QPSolver::check_residual(double *target, double *multiplicand) {
   /* Returns the squared 2-norm of lhs - A*rhs. */
   /* Reuses v to find the residual. */
   int i;
@@ -18485,7 +18485,7 @@ double Solver::check_residual(double *target, double *multiplicand) {
   return residual;
 }
 
-void Solver::fill_KKT(void) {
+void QPSolver::fill_KKT(void) {
   work.KKT[1123] = 2*params.Q[0];
   work.KKT[1413] = 2*params.Q[1];
   work.KKT[1546] = 2*params.Q[2];

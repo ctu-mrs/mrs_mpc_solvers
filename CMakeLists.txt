@@ -7,7 +7,6 @@ find_package(catkin REQUIRED COMPONENTS
   )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
 
 # include Eigen3
 find_package(Eigen3 REQUIRED)
@@ -34,17 +33,17 @@ include_directories(
 # CVXgen wrapper for MPC tracker
 
 add_library(MpcTrackerSolver src/mpc_tracker/mpc_tracker_solver.cpp
-  src/mpc_tracker/cvxgen/ldl.c
-  src/mpc_tracker/cvxgen/matrix_support.c
-  src/mpc_tracker/cvxgen/solver.c
-  src/mpc_tracker/cvxgen/util.c
+  src/mpc_tracker/solver/ldl.cpp
+  src/mpc_tracker/solver/matrix_support.cpp
+  src/mpc_tracker/solver/solver.cpp
+  src/mpc_tracker/solver/util.cpp
   )
 
 add_library(MpcControllerSolver src/mpc_controller/mpc_controller_solver.cpp
-  src/mpc_controller/cvxgen/ldl.c
-  src/mpc_controller/cvxgen/matrix_support.c
-  src/mpc_controller/cvxgen/solver.c
-  src/mpc_controller/cvxgen/util.c
+  src/mpc_controller/solver/ldl.cpp
+  src/mpc_controller/solver/matrix_support.cpp
+  src/mpc_controller/solver/solver.cpp
+  src/mpc_controller/solver/util.cpp
   )
 
 install(TARGETS

@@ -6,14 +6,14 @@
 
 /* Filename: util.c. */
 /* Description: Common utility file for all cvxgen code. */
-#include "solver.h"
+#include <mrs_mpc_solvers/tracker/solver/solver.h>
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
 
 namespace mrs_mpc_solvers {
 
-namespace tracker {
+namespace mpc_tracker {
 
 long global_seed = 1;
 static clock_t tic_timestart;
@@ -22,19 +22,20 @@ void tic(void) {
   tic_timestart = clock();
 }
 
-float Solver::toc(void) {
+float QPSolver::toc(void) {
   clock_t tic_timestop;
   tic_timestop = clock();
   printf("time: %8.2f.\n", (float)(tic_timestop - tic_timestart) / CLOCKS_PER_SEC);
   return (float)(tic_timestop - tic_timestart) / CLOCKS_PER_SEC;
 }
-float Solver::tocq(void) {
+
+float QPSolver::tocq(void) {
   clock_t tic_timestop;
   tic_timestop = clock();
   return (float)(tic_timestop - tic_timestart) / CLOCKS_PER_SEC;
 }
 
-void Solver::printmatrix(char *name, double *A, int m, int n, int sparse) {
+void QPSolver::printmatrix(char *name, double *A, int m, int n, int sparse) {
   int i, j;
   printf("%s = [...\n", name);
   for (i = 0; i < m; i++) {
@@ -48,7 +49,7 @@ void Solver::printmatrix(char *name, double *A, int m, int n, int sparse) {
   printf("];\n");
 }
 
-double Solver::unif(double lower, double upper) {
+double QPSolver::unif(double lower, double upper) {
   return lower + ((upper - lower)*rand())/RAND_MAX;
 }
 
@@ -63,7 +64,7 @@ double Solver::unif(double lower, double upper) {
 #define EPS 1.2e-7
 #define RNMX (1.0-EPS)
 
-float Solver::ran1(long*idum, int reset) {
+float QPSolver::ran1(long*idum, int reset) {
   int j;
   long k;
   static long iy=0;
@@ -94,7 +95,7 @@ float Solver::ran1(long*idum, int reset) {
 }
 
 /* Next function is from numerical recipes in C. */
-float Solver::randn_internal(long *idum, int reset) {
+float QPSolver::randn_internal(long *idum, int reset) {
   static int iset=0;
   static float gset;
   float fac, rsq, v1, v2;
@@ -117,11 +118,11 @@ float Solver::randn_internal(long *idum, int reset) {
   }
 }
 
-double Solver::randn(void) {
+double QPSolver::randn(void) {
   return randn_internal(&global_seed, 0);
 }
 
-void Solver::reset_rand(void) {
+void QPSolver::reset_rand(void) {
   srand(15);
   global_seed = 1;
   randn_internal(&global_seed, 1);

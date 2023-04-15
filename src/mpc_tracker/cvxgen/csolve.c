@@ -8,11 +8,12 @@
 /* Description: mex-able file for running cvxgen solver. */
 #include "mex.h"
 #include "solver.h"
-Vars vars;
-Params params;
-Workspace work;
-Settings settings;
-void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
+
+namespace mrs_mpc_solvers {
+
+namespace tracker {
+
+void Solver::mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
   int i, j;
   mxArray *xm, *cell, *xm_cell;
   double *src;
@@ -2996,4 +2997,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     *dest++ = *src;
     *dest_cell++ = *src++;
   }
+}
+
+}
+
 }

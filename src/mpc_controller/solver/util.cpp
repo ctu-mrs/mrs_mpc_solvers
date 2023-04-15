@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2018-11-06 10:21:36 -0500.  */
+/* Produced by CVXGEN, 2019-06-11 03:54:38 -0400.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -6,35 +6,36 @@
 
 /* Filename: util.c. */
 /* Description: Common utility file for all cvxgen code. */
-#include "solver.h"
+#include <mrs_mpc_solvers/controller/solver/solver.h>
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
 
 namespace mrs_mpc_solvers {
 
-namespace tracker {
+namespace mpc_controller {
 
 long global_seed = 1;
 static clock_t tic_timestart;
 
-void tic(void) {
+void QPSolver::tic_controller(void) {
   tic_timestart = clock();
 }
 
-float Solver::toc(void) {
+float QPSolver::toc_controller(void) {
   clock_t tic_timestop;
   tic_timestop = clock();
   printf("time: %8.2f.\n", (float)(tic_timestop - tic_timestart) / CLOCKS_PER_SEC);
   return (float)(tic_timestop - tic_timestart) / CLOCKS_PER_SEC;
 }
-float Solver::tocq(void) {
+
+float QPSolver::tocq_controller(void) {
   clock_t tic_timestop;
   tic_timestop = clock();
   return (float)(tic_timestop - tic_timestart) / CLOCKS_PER_SEC;
 }
 
-void Solver::printmatrix(char *name, double *A, int m, int n, int sparse) {
+void QPSolver::printmatrixd_controller(char *name, double *A, int m, int n, int sparse) {
   int i, j;
   printf("%s = [...\n", name);
   for (i = 0; i < m; i++) {
@@ -48,7 +49,7 @@ void Solver::printmatrix(char *name, double *A, int m, int n, int sparse) {
   printf("];\n");
 }
 
-double Solver::unif(double lower, double upper) {
+double QPSolver::unif_controller(double lower, double upper) {
   return lower + ((upper - lower)*rand())/RAND_MAX;
 }
 
@@ -63,7 +64,7 @@ double Solver::unif(double lower, double upper) {
 #define EPS 1.2e-7
 #define RNMX (1.0-EPS)
 
-float Solver::ran1(long*idum, int reset) {
+float QPSolver::ran1d_controller(long*idum, int reset) {
   int j;
   long k;
   static long iy=0;
@@ -94,7 +95,7 @@ float Solver::ran1(long*idum, int reset) {
 }
 
 /* Next function is from numerical recipes in C. */
-float Solver::randn_internal(long *idum, int reset) {
+float QPSolver::randn_internal_controller(long *idum, int reset) {
   static int iset=0;
   static float gset;
   float fac, rsq, v1, v2;
@@ -103,8 +104,8 @@ float Solver::randn_internal(long *idum, int reset) {
   }
   if (iset==0) {
     do {
-      v1 = 2.0*ran1(idum, reset)-1.0;
-      v2 = 2.0*ran1(idum, reset)-1.0;
+      v1 = 2.0*ran1d_controller(idum, reset)-1.0;
+      v2 = 2.0*ran1d_controller(idum, reset)-1.0;
       rsq = v1*v1+v2*v2;
     } while(rsq >= 1.0 || rsq == 0.0);
     fac = sqrt(-2.0*log(rsq)/rsq);
@@ -117,14 +118,14 @@ float Solver::randn_internal(long *idum, int reset) {
   }
 }
 
-double Solver::randn(void) {
-  return randn_internal(&global_seed, 0);
+double QPSolver::randn_controller(void) {
+  return randn_internal_controller(&global_seed, 0);
 }
 
-void Solver::reset_rand(void) {
+void QPSolver::reset_rand_controller(void) {
   srand(15);
   global_seed = 1;
-  randn_internal(&global_seed, 1);
+  randn_internal_controller(&global_seed, 1);
 }
 
 }

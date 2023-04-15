@@ -6,13 +6,13 @@
 
 /* Filename: matrix_support.c. */
 /* Description: Support functions for matrix multiplication and vector filling. */
-#include "solver.h"
+#include <mrs_mpc_solvers/tracker/solver/solver.h>
 
 namespace mrs_mpc_solvers {
 
-namespace tracker {
+namespace mpc_tracker {
 
-void Solver::multbymA(double *lhs, double *rhs) {
+void QPSolver::multbymA(double *lhs, double *rhs) {
   lhs[0] = -rhs[40]*(1);
   lhs[1] = -rhs[41]*(1);
   lhs[2] = -rhs[42]*(1);
@@ -175,7 +175,7 @@ void Solver::multbymA(double *lhs, double *rhs) {
   lhs[159] = -rhs[39]*(-params.B[0])-rhs[195]*(-params.A[3])-rhs[199]*(1);
 }
 
-void Solver::multbymAT(double *lhs, double *rhs) {
+void QPSolver::multbymAT(double *lhs, double *rhs) {
   lhs[0] = -rhs[3]*(-params.Bf[0]);
   lhs[1] = -rhs[7]*(-params.B[0]);
   lhs[2] = -rhs[11]*(-params.B[0]);
@@ -378,7 +378,7 @@ void Solver::multbymAT(double *lhs, double *rhs) {
   lhs[199] = -rhs[159]*(1);
 }
 
-void Solver::multbymG(double *lhs, double *rhs) {
+void QPSolver::multbymG(double *lhs, double *rhs) {
   lhs[0] = -rhs[41]*(1);
   lhs[1] = -rhs[45]*(1);
   lhs[2] = -rhs[49]*(1);
@@ -701,7 +701,7 @@ void Solver::multbymG(double *lhs, double *rhs) {
   lhs[319] = -rhs[39]*(-1);
 }
 
-void Solver::multbymGT(double *lhs, double *rhs) {
+void QPSolver::multbymGT(double *lhs, double *rhs) {
   lhs[0] = -rhs[240]*(1)-rhs[280]*(-1);
   lhs[1] = -rhs[241]*(1)-rhs[281]*(-1);
   lhs[2] = -rhs[242]*(1)-rhs[282]*(-1);
@@ -904,7 +904,7 @@ void Solver::multbymGT(double *lhs, double *rhs) {
   lhs[199] = -rhs[199]*(1)-rhs[239]*(-1);
 }
 
-void Solver::multbyP(double *lhs, double *rhs) {
+void QPSolver::multbyP(double *lhs, double *rhs) {
   /* TODO use the fact that P is symmetric? */
   /* TODO check doubling / half factor etc. */
   lhs[0] = 0;
@@ -1109,7 +1109,7 @@ void Solver::multbyP(double *lhs, double *rhs) {
   lhs[199] = rhs[199]*(2*params.Q[3]);
 }
 
-void Solver::fillq(void) {
+void QPSolver::fillq(void) {
   work.q[0] = 0;
   work.q[1] = 0;
   work.q[2] = 0;
@@ -1312,7 +1312,7 @@ void Solver::fillq(void) {
   work.q[199] = -2*params.Q[3]*params.x_ss_40[3];
 }
 
-void Solver::fillh(void) {
+void QPSolver::fillh(void) {
   work.h[0] = params.x_max_2[0];
   work.h[1] = params.x_max_2[0];
   work.h[2] = params.x_max_2[0];
@@ -1635,7 +1635,7 @@ void Solver::fillh(void) {
   work.h[319] = params.u_min[0];
 }
 
-void Solver::fillb(void) {
+void QPSolver::fillb(void) {
   work.b[0] = params.Af[0]*params.x_0[0]+params.Af[4]*params.x_0[1]+params.Af[7]*params.x_0[2];
   work.b[1] = params.Af[1]*params.x_0[1]+params.Af[5]*params.x_0[2]+params.Af[8]*params.x_0[3];
   work.b[2] = params.Af[2]*params.x_0[2]+params.Af[6]*params.x_0[3];
@@ -1798,7 +1798,7 @@ void Solver::fillb(void) {
   work.b[159] = 0;
 }
 
-void Solver::pre_ops(void) {
+void QPSolver::pre_ops(void) {
   work.quad_600568381440[0] = params.x_ss_1[0]*params.Q[0]*params.x_ss_1[0]+params.x_ss_1[1]*params.Q[1]*params.x_ss_1[1]+params.x_ss_1[2]*params.Q[2]*params.x_ss_1[2]+params.x_ss_1[3]*params.Q[3]*params.x_ss_1[3];
   work.quad_898851794944[0] = params.x_ss_2[0]*params.Q[0]*params.x_ss_2[0]+params.x_ss_2[1]*params.Q[1]*params.x_ss_2[1]+params.x_ss_2[2]*params.Q[2]*params.x_ss_2[2]+params.x_ss_2[3]*params.Q[3]*params.x_ss_2[3];
   work.quad_88433618944[0] = params.x_ss_3[0]*params.Q[0]*params.x_ss_3[0]+params.x_ss_3[1]*params.Q[1]*params.x_ss_3[1]+params.x_ss_3[2]*params.Q[2]*params.x_ss_3[2]+params.x_ss_3[3]*params.Q[3]*params.x_ss_3[3];

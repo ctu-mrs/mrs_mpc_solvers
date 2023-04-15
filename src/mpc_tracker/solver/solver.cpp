@@ -6,15 +6,15 @@
 
 /* Filename: solver.c. */
 /* Description: Main solver file. */
-#include "solver.h"
+#include <mrs_mpc_solvers/tracker/solver/solver.h>
 
 namespace mrs_mpc_solvers
 {
 
-namespace tracker
+namespace mpc_tracker
 {
 
-double Solver::eval_gap(void) {
+double QPSolver::eval_gap(void) {
   int    i;
   double gap;
   gap = 0;
@@ -23,7 +23,7 @@ double Solver::eval_gap(void) {
   return gap;
 }
 
-void Solver::set_defaults(void) {
+void QPSolver::set_defaults(void) {
   settings.resid_tol          = 1e-6;
   settings.eps                = 1e-4;
   settings.max_iters          = 25;
@@ -37,7 +37,7 @@ void Solver::set_defaults(void) {
   settings.kkt_reg            = 1e-7;
 }
 
-void Solver::setup_pointers(void) {
+void QPSolver::setup_pointers(void) {
   work.y    = work.x + 200;
   work.s    = work.x + 360;
   work.z    = work.x + 680;
@@ -123,7 +123,7 @@ void Solver::setup_pointers(void) {
   vars.x_40 = work.x + 196;
 }
 
-void Solver::setup_indexed_params(void) {
+void QPSolver::setup_indexed_params(void) {
   /* In CVXGEN, you can say */
   /*   parameters */
   /*     A[i] (5,3), i=1..4 */
@@ -175,7 +175,7 @@ void Solver::setup_indexed_params(void) {
   params.x[0]     = params.x_0;
 }
 
-void Solver::setup_indexed_optvars(void) {
+void QPSolver::setup_indexed_optvars(void) {
   /* In CVXGEN, you can say */
   /*   variables */
   /*     x[i] (5), i=2..4 */
@@ -266,13 +266,13 @@ void Solver::setup_indexed_optvars(void) {
   vars.u[39] = vars.u_39;
 }
 
-void Solver::setup_indexing(void) {
+void QPSolver::setup_indexing(void) {
   setup_pointers();
   setup_indexed_params();
   setup_indexed_optvars();
 }
 
-void Solver::set_start(void) {
+void QPSolver::set_start(void) {
   int i;
   for (i = 0; i < 200; i++)
     work.x[i] = 0;
@@ -284,7 +284,7 @@ void Solver::set_start(void) {
     work.z[i] = settings.z_init;
 }
 
-double Solver::eval_objv(void) {
+double QPSolver::eval_objv(void) {
   int    i;
   double objv;
   /* Borrow space in work.rhs. */
@@ -306,7 +306,7 @@ double Solver::eval_objv(void) {
   return objv;
 }
 
-void Solver::fillrhs_aff(void) {
+void QPSolver::fillrhs_aff(void) {
   int     i;
   double *r1, *r2, *r3, *r4;
   r1 = work.rhs;
@@ -334,7 +334,7 @@ void Solver::fillrhs_aff(void) {
     r4[i] += work.b[i];
 }
 
-void Solver::fillrhs_cc(void) {
+void QPSolver::fillrhs_cc(void) {
   int     i;
   double *r2;
   double *ds_aff, *dz_aff;
@@ -380,7 +380,7 @@ void Solver::fillrhs_cc(void) {
     r2[i] = work.s_inv[i] * (smu - ds_aff[i] * dz_aff[i]);
 }
 
-void Solver::refine(double *target, double *var) {
+void QPSolver::refine(double *target, double *var) {
   int     i, j;
   double *residual = work.buffer;
   double  norm2;
@@ -425,7 +425,7 @@ void Solver::refine(double *target, double *var) {
 #endif
 }
 
-double Solver::calc_ineq_resid_squared(void) {
+double QPSolver::calc_ineq_resid_squared(void) {
   /* Calculates the norm ||-Gx - s + h||. */
   double norm2_squared;
   int    i;
@@ -441,7 +441,7 @@ double Solver::calc_ineq_resid_squared(void) {
   return norm2_squared;
 }
 
-double Solver::calc_eq_resid_squared(void) {
+double QPSolver::calc_eq_resid_squared(void) {
   /* Calculates the norm ||-Ax + b||. */
   double norm2_squared;
   int    i;
@@ -457,7 +457,7 @@ double Solver::calc_eq_resid_squared(void) {
   return norm2_squared;
 }
 
-void Solver::better_start(void) {
+void QPSolver::better_start(void) {
   /* Calculates a better starting point, using a similar approach to CVXOPT. */
   /* Not yet speed optimized. */
   int     i;
@@ -511,7 +511,7 @@ void Solver::better_start(void) {
   }
 }
 
-void Solver::fillrhs_start(void) {
+void QPSolver::fillrhs_start(void) {
   /* Fill rhs with (-q, 0, h, b). */
   int     i;
   double *r1, *r2, *r3, *r4;
@@ -529,7 +529,7 @@ void Solver::fillrhs_start(void) {
     r4[i] = work.b[i];
 }
 
-long Solver::solve(void) {
+long QPSolver::solve(void) {
   int     i;
   int     iter;
   double *dx, *ds, *dy, *dz;

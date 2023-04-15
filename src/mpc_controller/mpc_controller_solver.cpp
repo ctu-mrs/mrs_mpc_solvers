@@ -1,7 +1,7 @@
 /* author: Daniel Hert */
 
 #include <eigen3/Eigen/Eigen>
-#include <mpc_controller_solver.h>
+#include <mrs_mpc_solvers/controller/mpc_controller.h>
 
 using namespace Eigen;
 
@@ -11,18 +11,7 @@ namespace mrs_mpc_solvers
 namespace mpc_controller
 {
 
-extern "C" {
-#include "cvxgen/solver.h"
-}
-
-VarsController      varsController;
-ParamsController    paramsController;
-WorkspaceController workController;
-SettingsController  settingsController;
-
 /* class Solver() //{ */
-
-std::mutex Solver::mutex_main_;
 
 Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double> Q, std::vector<double> Q_last, double dt1, double dt2, double p1, double p2) {
 
@@ -37,11 +26,11 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
   this->p1_         = p1;
   this->p2_         = p2;
 
-  paramsController.u_last[0] = 0;
+  qp_solver_.paramsController.u_last[0] = 0;
 
-  set_defaults_controller();
-  setup_indexing_controller();
-  setup_indexed_optvarsController_controller();
+  qp_solver_.set_defaults_controller();
+  qp_solver_.setup_indexing_controller();
+  qp_solver_.setup_indexed_optvarsController_controller();
 
   setParams();
 
@@ -54,32 +43,32 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
 
 void Solver::setParams(void) {
 
-  settingsController.verbose   = this->_verbose_;
-  settingsController.max_iters = this->_max_iters_;
+  qp_solver_.settingsController.verbose   = this->_verbose_;
+  qp_solver_.settingsController.max_iters = this->_max_iters_;
 
   for (int i = 0; i < 3; i++) {
-    paramsController.Q[i] = Q_[i];
+    qp_solver_.paramsController.Q[i] = Q_[i];
   }
 
   for (int i = 0; i < 3; i++) {
-    paramsController.Q_last[i] = Q_last_[i];
+    qp_solver_.paramsController.Q_last[i] = Q_last_[i];
   }
 
-  paramsController.Af[0] = 1;
-  paramsController.Af[1] = 1;
-  paramsController.Af[2] = p1_;
-  paramsController.Af[3] = dt1_;
-  paramsController.Af[4] = dt1_;
+  qp_solver_.paramsController.Af[0] = 1;
+  qp_solver_.paramsController.Af[1] = 1;
+  qp_solver_.paramsController.Af[2] = p1_;
+  qp_solver_.paramsController.Af[3] = dt1_;
+  qp_solver_.paramsController.Af[4] = dt1_;
 
-  paramsController.Bf[0] = p2_;
+  qp_solver_.paramsController.Bf[0] = p2_;
 
-  paramsController.A[0] = 1;
-  paramsController.A[1] = 1;
-  paramsController.A[2] = p1_;
-  paramsController.A[3] = dt2_;
-  paramsController.A[4] = dt2_;
+  qp_solver_.paramsController.A[0] = 1;
+  qp_solver_.paramsController.A[1] = 1;
+  qp_solver_.paramsController.A[2] = p1_;
+  qp_solver_.paramsController.A[3] = dt2_;
+  qp_solver_.paramsController.A[4] = dt2_;
 
-  paramsController.B[0] = p2_;
+  qp_solver_.paramsController.B[0] = p2_;
 }
 
 //}
@@ -88,11 +77,11 @@ void Solver::setParams(void) {
 
 void Solver::setLimits(double max_speed, double max_acc, double max_u, double max_du, double dt1, double dt2) {
 
-  paramsController.x_max_2[0]  = max_speed;
-  paramsController.x_max_3[0]  = max_acc;
-  paramsController.u_max[0]    = max_u;
-  paramsController.du_max_f[0] = max_du * dt1;
-  paramsController.du_max[0]   = max_du * dt2;
+  qp_solver_.paramsController.x_max_2[0]  = max_speed;
+  qp_solver_.paramsController.x_max_3[0]  = max_acc;
+  qp_solver_.paramsController.u_max[0]    = max_u;
+  qp_solver_.paramsController.du_max_f[0] = max_du * dt1;
+  qp_solver_.paramsController.du_max[0]   = max_du * dt2;
 }
 
 //}
@@ -101,7 +90,7 @@ void Solver::setLimits(double max_speed, double max_acc, double max_u, double ma
 
 void Solver::setLastInput(double last_input) {
 
-  paramsController.u_last[0] = last_input;
+  qp_solver_.paramsController.u_last[0] = last_input;
 }
 
 //}
@@ -110,11 +99,11 @@ void Solver::setLastInput(double last_input) {
 
 void Solver::setDt(double dt1, double dt2) {
 
-  paramsController.Af[2] = dt1;
-  paramsController.Af[3] = dt1;
+  qp_solver_.paramsController.Af[2] = dt1;
+  qp_solver_.paramsController.Af[3] = dt1;
 
-  paramsController.A[2] = dt2;
-  paramsController.A[3] = dt2;
+  qp_solver_.paramsController.A[2] = dt2;
+  qp_solver_.paramsController.A[3] = dt2;
 }
 
 //}
@@ -123,9 +112,9 @@ void Solver::setDt(double dt1, double dt2) {
 
 void Solver::setInitialState(MatrixXd& x) {
 
-  paramsController.x_0[0] = x(0, 0);
-  paramsController.x_0[1] = x(1, 0);
-  paramsController.x_0[2] = x(2, 0);
+  qp_solver_.paramsController.x_0[0] = x(0, 0);
+  qp_solver_.paramsController.x_0[1] = x(1, 0);
+  qp_solver_.paramsController.x_0[2] = x(2, 0);
 }
 
 //}
@@ -136,9 +125,9 @@ void Solver::loadReference(MatrixXd& reference) {
 
   for (int i = 0; i < _horizon_len_; i++) {
 
-    paramsController.x_ss[i + 1][0] = reference((3 * i) + 0, 0);
-    paramsController.x_ss[i + 1][1] = reference((3 * i) + 1, 0);
-    paramsController.x_ss[i + 1][2] = reference((3 * i) + 2, 0);
+    qp_solver_.paramsController.x_ss[i + 1][0] = reference((3 * i) + 0, 0);
+    qp_solver_.paramsController.x_ss[i + 1][1] = reference((3 * i) + 1, 0);
+    qp_solver_.paramsController.x_ss[i + 1][2] = reference((3 * i) + 2, 0);
   }
 }
 
@@ -172,7 +161,7 @@ void Solver::setS(const std::vector<double> new_S) {
 
 int Solver::solveMPC() {
 
-  return solve_controller();
+  return qp_solver_.solve_controller();
 }
 //}
 
@@ -182,9 +171,9 @@ void Solver::getStates(MatrixXd& future_traj) {
 
   for (int i = 0; i < _horizon_len_; i++) {
 
-    future_traj(0 + (i * 3)) = *(varsController.x[i + 1]);
-    future_traj(1 + (i * 3)) = *(varsController.x[i + 1] + 1);
-    future_traj(2 + (i * 3)) = *(varsController.x[i + 1] + 2);
+    future_traj(0 + (i * 3)) = *(qp_solver_.varsController.x[i + 1]);
+    future_traj(1 + (i * 3)) = *(qp_solver_.varsController.x[i + 1] + 1);
+    future_traj(2 + (i * 3)) = *(qp_solver_.varsController.x[i + 1] + 2);
   }
 }
 
@@ -194,25 +183,7 @@ void Solver::getStates(MatrixXd& future_traj) {
 
 double Solver::getFirstControlInput() {
 
-  return *(varsController.u_0);
-}
-
-//}
-
-/* lock() //{ */
-
-void Solver::lock(void) {
-
-  this->mutex_main_.lock();
-}
-
-//}
-
-/* unlock() //{ */
-
-void Solver::unlock(void) {
-
-  this->mutex_main_.unlock();
+  return *(qp_solver_.varsController.u_0);
 }
 
 //}
