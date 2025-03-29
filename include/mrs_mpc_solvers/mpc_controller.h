@@ -1,8 +1,8 @@
 #ifndef MPC_CONTROLLER_SOLVER_H
 #define MPC_CONTROLLER_SOLVER_H
 
+#include <mrs_mpc_solvers/mpc_controller/solver.h>
 #include <eigen3/Eigen/Eigen>
-#include "solver/solver.h"
 
 namespace mrs_mpc_solvers
 {

@@ -1,12 +1,4 @@
-/* Produced by CVXGEN, 2018-11-06 10:21:36 -0500.  */
-/* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
-/* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
-/* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
-/* applications without prior written permission from Jacob Mattingley. */
-
-/* Filename: util.c. */
-/* Description: Common utility file for all cvxgen code. */
-#include <mrs_mpc_solvers/tracker/solver/solver.h>
+#include <mrs_mpc_solvers/mpc_tracker/solver.h>
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
@@ -89,7 +81,7 @@ float QPSolver::ran1(long *idum, int reset) {
 
 /* Next function is from numerical recipes in C. */
 float QPSolver::randn_internal(long *idum, int reset) {
-  float        fac, rsq, v1, v2;
+  float fac, rsq, v1, v2;
   if (reset) {
     iset = 0;
   }

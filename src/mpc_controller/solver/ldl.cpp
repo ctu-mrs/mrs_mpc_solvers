@@ -1,4 +1,4 @@
-#include <mrs_mpc_solvers/controller/solver/solver.h>
+#include <mrs_mpc_solvers/mpc_controller/solver.h>
 
 namespace mrs_mpc_solvers {
 

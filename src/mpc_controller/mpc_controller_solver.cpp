@@ -1,8 +1,6 @@
 /* author: Daniel Hert */
 
-#include <eigen3/Eigen/Eigen>
-#include <mrs_mpc_solvers/controller/mpc_controller.h>
-#include <ros/ros.h>
+#include <mrs_mpc_solvers/mpc_controller.h>
 
 using namespace Eigen;
 
@@ -34,8 +32,6 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
   qp_solver_.setup_indexed_optvarsController_controller();
 
   setParams();
-
-  ROS_INFO("[%s]: solver initialized", _name_.c_str());
 }
 
 //}

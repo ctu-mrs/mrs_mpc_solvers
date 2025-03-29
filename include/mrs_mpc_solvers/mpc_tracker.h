@@ -1,9 +1,8 @@
 #ifndef MPC_TRACKER_SOLVER
 #define MPC_TRACKER_SOLVER
 
-#include <ros/ros.h>
+#include <mrs_mpc_solvers/mpc_tracker/solver.h>
 #include <eigen3/Eigen/Eigen>
-#include "solver/solver.h"
 
 namespace mrs_mpc_solvers
 {

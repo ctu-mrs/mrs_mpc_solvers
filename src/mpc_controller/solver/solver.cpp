@@ -1,46 +1,48 @@
-#include <mrs_mpc_solvers/controller/solver/solver.h>
+#include <mrs_mpc_solvers/mpc_controller/solver.h>
 
-namespace mrs_mpc_solvers {
+namespace mrs_mpc_solvers
+{
 
-namespace mpc_controller {
+namespace mpc_controller
+{
 
 double QPSolver::eval_gap_controller(void) {
-  int i;
+  int    i;
   double gap;
   gap = 0;
   for (i = 0; i < 312; i++)
-    gap += workController.z[i]*workController.s[i];
+    gap += workController.z[i] * workController.s[i];
   return gap;
 }
 
 void QPSolver::set_defaults_controller(void) {
-  settingsController.resid_tol = 1e-6;
-  settingsController.eps = 1e-4;
-  settingsController.max_iters = 25;
-  settingsController.refine_steps = 1;
-  settingsController.s_init = 1;
-  settingsController.z_init = 1;
-  settingsController.debug = 0;
-  settingsController.verbose = 1;
+  settingsController.resid_tol          = 1e-6;
+  settingsController.eps                = 1e-4;
+  settingsController.max_iters          = 25;
+  settingsController.refine_steps       = 1;
+  settingsController.s_init             = 1;
+  settingsController.z_init             = 1;
+  settingsController.debug              = 0;
+  settingsController.verbose            = 1;
   settingsController.verbose_refinement = 0;
-  settingsController.better_start = 1;
-  settingsController.kkt_reg = 1e-7;
+  settingsController.better_start       = 1;
+  settingsController.kkt_reg            = 1e-7;
 }
 
 void QPSolver::setup_pointers_controller(void) {
-  workController.y = workController.x + 208;
-  workController.s = workController.x + 286;
-  workController.z = workController.x + 598;
-  varsController.u_0 = workController.x + 104;
-  varsController.u_1 = workController.x + 105;
-  varsController.u_2 = workController.x + 106;
-  varsController.u_3 = workController.x + 107;
-  varsController.u_4 = workController.x + 108;
-  varsController.u_5 = workController.x + 109;
-  varsController.u_6 = workController.x + 110;
-  varsController.u_7 = workController.x + 111;
-  varsController.u_8 = workController.x + 112;
-  varsController.u_9 = workController.x + 113;
+  workController.y    = workController.x + 208;
+  workController.s    = workController.x + 286;
+  workController.z    = workController.x + 598;
+  varsController.u_0  = workController.x + 104;
+  varsController.u_1  = workController.x + 105;
+  varsController.u_2  = workController.x + 106;
+  varsController.u_3  = workController.x + 107;
+  varsController.u_4  = workController.x + 108;
+  varsController.u_5  = workController.x + 109;
+  varsController.u_6  = workController.x + 110;
+  varsController.u_7  = workController.x + 111;
+  varsController.u_8  = workController.x + 112;
+  varsController.u_9  = workController.x + 113;
   varsController.u_10 = workController.x + 114;
   varsController.u_11 = workController.x + 115;
   varsController.u_12 = workController.x + 116;
@@ -57,15 +59,15 @@ void QPSolver::setup_pointers_controller(void) {
   varsController.u_23 = workController.x + 127;
   varsController.u_24 = workController.x + 128;
   varsController.u_25 = workController.x + 129;
-  varsController.x_1 = workController.x + 130;
-  varsController.x_2 = workController.x + 133;
-  varsController.x_3 = workController.x + 136;
-  varsController.x_4 = workController.x + 139;
-  varsController.x_5 = workController.x + 142;
-  varsController.x_6 = workController.x + 145;
-  varsController.x_7 = workController.x + 148;
-  varsController.x_8 = workController.x + 151;
-  varsController.x_9 = workController.x + 154;
+  varsController.x_1  = workController.x + 130;
+  varsController.x_2  = workController.x + 133;
+  varsController.x_3  = workController.x + 136;
+  varsController.x_4  = workController.x + 139;
+  varsController.x_5  = workController.x + 142;
+  varsController.x_6  = workController.x + 145;
+  varsController.x_7  = workController.x + 148;
+  varsController.x_8  = workController.x + 151;
+  varsController.x_9  = workController.x + 154;
   varsController.x_10 = workController.x + 157;
   varsController.x_11 = workController.x + 160;
   varsController.x_12 = workController.x + 163;
@@ -94,15 +96,15 @@ void QPSolver::setup_indexed_paramsController_controller(void) {
   /* vector of doubles. */
   /* If you access parameters that you haven't defined in CVXGEN, the result */
   /* is undefined. */
-  paramsController.x_ss[1] = paramsController.x_ss_1;
-  paramsController.x_ss[2] = paramsController.x_ss_2;
-  paramsController.x_ss[3] = paramsController.x_ss_3;
-  paramsController.x_ss[4] = paramsController.x_ss_4;
-  paramsController.x_ss[5] = paramsController.x_ss_5;
-  paramsController.x_ss[6] = paramsController.x_ss_6;
-  paramsController.x_ss[7] = paramsController.x_ss_7;
-  paramsController.x_ss[8] = paramsController.x_ss_8;
-  paramsController.x_ss[9] = paramsController.x_ss_9;
+  paramsController.x_ss[1]  = paramsController.x_ss_1;
+  paramsController.x_ss[2]  = paramsController.x_ss_2;
+  paramsController.x_ss[3]  = paramsController.x_ss_3;
+  paramsController.x_ss[4]  = paramsController.x_ss_4;
+  paramsController.x_ss[5]  = paramsController.x_ss_5;
+  paramsController.x_ss[6]  = paramsController.x_ss_6;
+  paramsController.x_ss[7]  = paramsController.x_ss_7;
+  paramsController.x_ss[8]  = paramsController.x_ss_8;
+  paramsController.x_ss[9]  = paramsController.x_ss_9;
   paramsController.x_ss[10] = paramsController.x_ss_10;
   paramsController.x_ss[11] = paramsController.x_ss_11;
   paramsController.x_ss[12] = paramsController.x_ss_12;
@@ -120,7 +122,7 @@ void QPSolver::setup_indexed_paramsController_controller(void) {
   paramsController.x_ss[24] = paramsController.x_ss_24;
   paramsController.x_ss[25] = paramsController.x_ss_25;
   paramsController.x_ss[26] = paramsController.x_ss_26;
-  paramsController.x[0] = paramsController.x_0;
+  paramsController.x[0]     = paramsController.x_0;
 }
 
 void QPSolver::setup_indexed_optvarsController_controller(void) {
@@ -132,15 +134,15 @@ void QPSolver::setup_indexed_optvarsController_controller(void) {
   /* vector of doubles. */
   /* If you access variables that you haven't defined in CVXGEN, the result */
   /* is undefined. */
-  varsController.x[1] = varsController.x_1;
-  varsController.x[2] = varsController.x_2;
-  varsController.x[3] = varsController.x_3;
-  varsController.x[4] = varsController.x_4;
-  varsController.x[5] = varsController.x_5;
-  varsController.x[6] = varsController.x_6;
-  varsController.x[7] = varsController.x_7;
-  varsController.x[8] = varsController.x_8;
-  varsController.x[9] = varsController.x_9;
+  varsController.x[1]  = varsController.x_1;
+  varsController.x[2]  = varsController.x_2;
+  varsController.x[3]  = varsController.x_3;
+  varsController.x[4]  = varsController.x_4;
+  varsController.x[5]  = varsController.x_5;
+  varsController.x[6]  = varsController.x_6;
+  varsController.x[7]  = varsController.x_7;
+  varsController.x[8]  = varsController.x_8;
+  varsController.x[9]  = varsController.x_9;
   varsController.x[10] = varsController.x_10;
   varsController.x[11] = varsController.x_11;
   varsController.x[12] = varsController.x_12;
@@ -158,16 +160,16 @@ void QPSolver::setup_indexed_optvarsController_controller(void) {
   varsController.x[24] = varsController.x_24;
   varsController.x[25] = varsController.x_25;
   varsController.x[26] = varsController.x_26;
-  varsController.u[0] = varsController.u_0;
-  varsController.u[1] = varsController.u_1;
-  varsController.u[2] = varsController.u_2;
-  varsController.u[3] = varsController.u_3;
-  varsController.u[4] = varsController.u_4;
-  varsController.u[5] = varsController.u_5;
-  varsController.u[6] = varsController.u_6;
-  varsController.u[7] = varsController.u_7;
-  varsController.u[8] = varsController.u_8;
-  varsController.u[9] = varsController.u_9;
+  varsController.u[0]  = varsController.u_0;
+  varsController.u[1]  = varsController.u_1;
+  varsController.u[2]  = varsController.u_2;
+  varsController.u[3]  = varsController.u_3;
+  varsController.u[4]  = varsController.u_4;
+  varsController.u[5]  = varsController.u_5;
+  varsController.u[6]  = varsController.u_6;
+  varsController.u[7]  = varsController.u_7;
+  varsController.u[8]  = varsController.u_8;
+  varsController.u[9]  = varsController.u_9;
   varsController.u[10] = varsController.u_10;
   varsController.u[11] = varsController.u_11;
   varsController.u[12] = varsController.u_12;
@@ -205,22 +207,29 @@ void QPSolver::set_start_controller(void) {
 }
 
 double QPSolver::eval_objv_controller(void) {
-  int i;
+  int    i;
   double objv;
   /* Borrow space in workController.rhs. */
   multbyP_controller(workController.rhs, workController.x);
   objv = 0;
   for (i = 0; i < 208; i++)
-    objv += workController.x[i]*workController.rhs[i];
+    objv += workController.x[i] * workController.rhs[i];
   objv *= 0.5;
   for (i = 0; i < 208; i++)
-    objv += workController.q[i]*workController.x[i];
-  objv += workController.quad_600568381440[0]+workController.quad_898851794944[0]+workController.quad_88433618944[0]+workController.quad_240204779520[0]+workController.quad_635618762752[0]+workController.quad_732753989632[0]+workController.quad_427523055616[0]+workController.quad_976046530560[0]+workController.quad_688550678528[0]+workController.quad_304816418816[0]+workController.quad_819339411456[0]+workController.quad_101800079360[0]+workController.quad_976903761920[0]+workController.quad_141299838976[0]+workController.quad_343404097536[0]+workController.quad_815806124032[0]+workController.quad_997002137600[0]+workController.quad_141630619648[0]+workController.quad_835263414272[0]+workController.quad_962643562496[0]+workController.quad_928463360000[0]+workController.quad_380101586944[0]+workController.quad_150659375104[0]+workController.quad_392524365824[0]+workController.quad_653656117248[0]+workController.quad_758104227840[0];
+    objv += workController.q[i] * workController.x[i];
+  objv += workController.quad_600568381440[0] + workController.quad_898851794944[0] + workController.quad_88433618944[0] + workController.quad_240204779520[0] +
+          workController.quad_635618762752[0] + workController.quad_732753989632[0] + workController.quad_427523055616[0] +
+          workController.quad_976046530560[0] + workController.quad_688550678528[0] + workController.quad_304816418816[0] +
+          workController.quad_819339411456[0] + workController.quad_101800079360[0] + workController.quad_976903761920[0] +
+          workController.quad_141299838976[0] + workController.quad_343404097536[0] + workController.quad_815806124032[0] +
+          workController.quad_997002137600[0] + workController.quad_141630619648[0] + workController.quad_835263414272[0] +
+          workController.quad_962643562496[0] + workController.quad_928463360000[0] + workController.quad_380101586944[0] +
+          workController.quad_150659375104[0] + workController.quad_392524365824[0] + workController.quad_653656117248[0] + workController.quad_758104227840[0];
   return objv;
 }
 
 void QPSolver::fillrhs_aff_controller(void) {
-  int i;
+  int     i;
   double *r1, *r2, *r3, *r4;
   r1 = workController.rhs;
   r2 = workController.rhs + 208;
@@ -248,63 +257,62 @@ void QPSolver::fillrhs_aff_controller(void) {
 }
 
 void QPSolver::fillrhs_cc_controller(void) {
-  int i;
+  int     i;
   double *r2;
   double *ds_aff, *dz_aff;
-  double mu;
-  double alpha;
-  double sigma;
-  double smu;
-  double minval;
-  r2 = workController.rhs + 208;
+  double  mu;
+  double  alpha;
+  double  sigma;
+  double  smu;
+  double  minval;
+  r2     = workController.rhs + 208;
   ds_aff = workController.lhs_aff + 208;
   dz_aff = workController.lhs_aff + 520;
-  mu = 0;
+  mu     = 0;
   for (i = 0; i < 312; i++)
-    mu += workController.s[i]*workController.z[i];
+    mu += workController.s[i] * workController.z[i];
   /* Don't finish calculating mu quite yet. */
   /* Find min(min(ds./s), min(dz./z)). */
   minval = 0;
   for (i = 0; i < 312; i++)
-    if (ds_aff[i] < minval*workController.s[i])
-      minval = ds_aff[i]/workController.s[i];
+    if (ds_aff[i] < minval * workController.s[i])
+      minval = ds_aff[i] / workController.s[i];
   for (i = 0; i < 312; i++)
-    if (dz_aff[i] < minval*workController.z[i])
-      minval = dz_aff[i]/workController.z[i];
+    if (dz_aff[i] < minval * workController.z[i])
+      minval = dz_aff[i] / workController.z[i];
   /* Find alpha. */
   if (-1 < minval)
-      alpha = 1;
+    alpha = 1;
   else
-      alpha = -1/minval;
+    alpha = -1 / minval;
   sigma = 0;
   for (i = 0; i < 312; i++)
-    sigma += (workController.s[i] + alpha*ds_aff[i])*
-      (workController.z[i] + alpha*dz_aff[i]);
+    sigma += (workController.s[i] + alpha * ds_aff[i]) * (workController.z[i] + alpha * dz_aff[i]);
   sigma /= mu;
-  sigma = sigma*sigma*sigma;
+  sigma = sigma * sigma * sigma;
   /* Finish calculating mu now. */
   mu *= 0.003205128205128205;
-  smu = sigma*mu;
+  smu = sigma * mu;
   /* Fill-in the rhs. */
   for (i = 0; i < 208; i++)
     workController.rhs[i] = 0;
   for (i = 520; i < 910; i++)
     workController.rhs[i] = 0;
   for (i = 0; i < 312; i++)
-    r2[i] = workController.s_inv[i]*(smu - ds_aff[i]*dz_aff[i]);
+    r2[i] = workController.s_inv[i] * (smu - ds_aff[i] * dz_aff[i]);
 }
 
 void QPSolver::refine_controller(double *target, double *var) {
-  int i, j;
+  int     i, j;
   double *residual = workController.buffer;
-  double norm2;
+  double  norm2;
   double *new_var = workController.buffer2;
   for (j = 0; j < settingsController.refine_steps; j++) {
     norm2 = 0;
     matrix_multiply_controller(residual, var);
     for (i = 0; i < 910; i++) {
       residual[i] = residual[i] - target[i];
-      norm2 += residual[i]*residual[i];
+      norm2 += residual[i] * residual[i];
     }
 #ifndef ZERO_LIBRARY_MODE
     if (settingsController.verbose_refinement) {
@@ -329,7 +337,7 @@ void QPSolver::refine_controller(double *target, double *var) {
     matrix_multiply_controller(residual, var);
     for (i = 0; i < 910; i++) {
       residual[i] = residual[i] - target[i];
-      norm2 += residual[i]*residual[i];
+      norm2 += residual[i] * residual[i];
     }
     if (j == 0)
       printf("Initial residual before refinement has norm squared %.6g.\n", norm2);
@@ -342,7 +350,7 @@ void QPSolver::refine_controller(double *target, double *var) {
 double QPSolver::calc_ineq_resid_squared_controller(void) {
   /* Calculates the norm ||-Gx - s + h||. */
   double norm2_squared;
-  int i;
+  int    i;
   /* Find -Gx. */
   multbymG_controller(workController.buffer, workController.x);
   /* Add -s + h. */
@@ -351,14 +359,14 @@ double QPSolver::calc_ineq_resid_squared_controller(void) {
   /* Now find the squared norm. */
   norm2_squared = 0;
   for (i = 0; i < 312; i++)
-    norm2_squared += workController.buffer[i]*workController.buffer[i];
+    norm2_squared += workController.buffer[i] * workController.buffer[i];
   return norm2_squared;
 }
 
 double QPSolver::calc_eq_resid_squared_controller(void) {
   /* Calculates the norm ||-Ax + b||. */
   double norm2_squared;
-  int i;
+  int    i;
   /* Find -Ax. */
   multbymA_controller(workController.buffer, workController.x);
   /* Add +b. */
@@ -367,16 +375,16 @@ double QPSolver::calc_eq_resid_squared_controller(void) {
   /* Now find the squared norm. */
   norm2_squared = 0;
   for (i = 0; i < 78; i++)
-    norm2_squared += workController.buffer[i]*workController.buffer[i];
+    norm2_squared += workController.buffer[i] * workController.buffer[i];
   return norm2_squared;
 }
 
 void QPSolver::better_start_controller(void) {
   /* Calculates a better starting point, using a similar approach to CVXOPT. */
   /* Not yet speed optimized. */
-  int i;
+  int     i;
   double *x, *s, *z, *y;
-  double alpha;
+  double  alpha;
   workController.block_33[0] = -1;
   /* Make sure sinvz is 1 to make hijacked KKT system ok. */
   for (i = 0; i < 312; i++)
@@ -428,7 +436,7 @@ void QPSolver::better_start_controller(void) {
 
 void QPSolver::fillrhs_start_controller(void) {
   /* Fill rhs with (-q, 0, h, b). */
-  int i;
+  int     i;
   double *r1, *r2, *r3, *r4;
   r1 = workController.rhs;
   r2 = workController.rhs + 208;
@@ -445,11 +453,11 @@ void QPSolver::fillrhs_start_controller(void) {
 }
 
 long QPSolver::solve_controller(void) {
-  int i;
-  int iter;
+  int     i;
+  int     iter;
   double *dx, *ds, *dy, *dz;
-  double minval;
-  double alpha;
+  double  minval;
+  double  alpha;
   workController.converged = 0;
   setup_pointers_controller();
   pre_ops_controller();
@@ -466,8 +474,8 @@ long QPSolver::solve_controller(void) {
     set_start_controller();
   for (iter = 0; iter < settingsController.max_iters; iter++) {
     for (i = 0; i < 312; i++) {
-      workController.s_inv[i] = 1.0 / workController.s[i];
-      workController.s_inv_z[i] = workController.s_inv[i]*workController.z[i];
+      workController.s_inv[i]   = 1.0 / workController.s[i];
+      workController.s_inv_z[i] = workController.s_inv[i] * workController.z[i];
     }
     workController.block_33[0] = 0;
     fill_KKT_controller();
@@ -491,50 +499,47 @@ long QPSolver::solve_controller(void) {
     /* Find min(min(ds./s), min(dz./z)). */
     minval = 0;
     for (i = 0; i < 312; i++)
-      if (ds[i] < minval*workController.s[i])
-        minval = ds[i]/workController.s[i];
+      if (ds[i] < minval * workController.s[i])
+        minval = ds[i] / workController.s[i];
     for (i = 0; i < 312; i++)
-      if (dz[i] < minval*workController.z[i])
-        minval = dz[i]/workController.z[i];
+      if (dz[i] < minval * workController.z[i])
+        minval = dz[i] / workController.z[i];
     /* Find alpha. */
     if (-0.99 < minval)
       alpha = 1;
     else
-      alpha = -0.99/minval;
+      alpha = -0.99 / minval;
     /* Update the primal and dual variables. */
     for (i = 0; i < 208; i++)
-      workController.x[i] += alpha*dx[i];
+      workController.x[i] += alpha * dx[i];
     for (i = 0; i < 312; i++)
-      workController.s[i] += alpha*ds[i];
+      workController.s[i] += alpha * ds[i];
     for (i = 0; i < 312; i++)
-      workController.z[i] += alpha*dz[i];
+      workController.z[i] += alpha * dz[i];
     for (i = 0; i < 78; i++)
-      workController.y[i] += alpha*dy[i];
-    workController.gap = eval_gap_controller();
-    workController.eq_resid_squared = calc_eq_resid_squared_controller();
+      workController.y[i] += alpha * dy[i];
+    workController.gap                = eval_gap_controller();
+    workController.eq_resid_squared   = calc_eq_resid_squared_controller();
     workController.ineq_resid_squared = calc_ineq_resid_squared_controller();
 #ifndef ZERO_LIBRARY_MODE
     if (settingsController.verbose) {
       workController.optval = eval_objv_controller();
-      printf("%3d   %10.3e  %9.2e  %9.2e  %9.2e  % 6.4f\n",
-          iter+1, workController.optval, workController.gap, sqrt(workController.eq_resid_squared),
-          sqrt(workController.ineq_resid_squared), alpha);
+      printf("%3d   %10.3e  %9.2e  %9.2e  %9.2e  % 6.4f\n", iter + 1, workController.optval, workController.gap, sqrt(workController.eq_resid_squared),
+             sqrt(workController.ineq_resid_squared), alpha);
     }
 #endif
     /* Test termination conditions. Requires optimality, and satisfied */
     /* constraints. */
-    if (   (workController.gap < settingsController.eps)
-        && (workController.eq_resid_squared <= settingsController.resid_tol*settingsController.resid_tol)
-        && (workController.ineq_resid_squared <= settingsController.resid_tol*settingsController.resid_tol)
-       ) {
+    if ((workController.gap < settingsController.eps) && (workController.eq_resid_squared <= settingsController.resid_tol * settingsController.resid_tol) &&
+        (workController.ineq_resid_squared <= settingsController.resid_tol * settingsController.resid_tol)) {
       workController.converged = 1;
-      workController.optval = eval_objv_controller();
-      return iter+1;
+      workController.optval    = eval_objv_controller();
+      return iter + 1;
     }
   }
   return iter;
 }
 
-}
+}  // namespace mpc_controller
 
-}
+}  // namespace mrs_mpc_solvers

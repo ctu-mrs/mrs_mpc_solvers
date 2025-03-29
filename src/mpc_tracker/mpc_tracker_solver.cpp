@@ -1,5 +1,4 @@
-#include <eigen3/Eigen/Eigen>
-#include <mrs_mpc_solvers/tracker/mpc_tracker.h>
+#include <mrs_mpc_solvers/mpc_tracker.h>
 
 using namespace Eigen;
 
@@ -28,7 +27,7 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
   _dim_ = dimension * 4;
 
   if (_dim_ > 8 || _dim_ < 0) {
-    ROS_ERROR("[%s]: solver - parameter _dim_ should be 0, 1 or 2 !!! setting to 0", _name_.c_str());
+    printf("[%s]: solver - parameter _dim_ should be 0, 1 or 2 !!! setting to 0", _name_.c_str());
     _dim_ = 0;
   }
 
@@ -39,7 +38,7 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
   }
 
   if ((max_iters < 1 || max_iters > 100) || !std::isfinite(max_iters)) {
-    ROS_ERROR("[%s]: solver - max_iters wrong value!!! Safe value of 20 set instead", _name_.c_str());
+    printf("[%s]: solver - max_iters wrong value!!! Safe value of 20 set instead", _name_.c_str());
     max_iters = 20;
   }
 
@@ -50,13 +49,13 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
       if (tempQ[i] >= 0 && std::isfinite(tempQ[i])) {
         myQ_[i] = tempQ[i];
       } else {
-        ROS_ERROR("[%s]: solver - Q matrix has to be PSD - parameter %d !!! Safe value of 500 set instead", _name_.c_str(), i);
+        printf("[%s]: solver - Q matrix has to be PSD - parameter %d !!! Safe value of 500 set instead", _name_.c_str(), i);
         myQ_[i] = 500;
       }
     }
   } else {
 
-    ROS_ERROR("[%s]: solver - Q matrix wrong size %d !!! Safe values set instead", _name_.c_str(), int(tempQ.size()));
+    printf("[%s]: solver - Q matrix wrong size %d !!! Safe values set instead", _name_.c_str(), int(tempQ.size()));
 
     myQ_[0] = 5000;
     myQ_[1] = 0;
@@ -65,12 +64,12 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
   }
 
   if (dt <= 0 || !std::isfinite(dt)) {
-    ROS_ERROR("[%s]: solver - dt parameter wrong %.3f !!! Safe value of 0.01 set instead", _name_.c_str(), dt);
+    printf("[%s]: solver - dt parameter wrong %.3f !!! Safe value of 0.01 set instead", _name_.c_str(), dt);
     dt = 0.01;
   }
 
   if (dt2 <= 0 || !std::isfinite(dt2)) {
-    ROS_ERROR("[%s]: solver - dt2 parameter wrong %.3f !!! Safe value of 0.2 set instead", _name_.c_str(), dt2);
+    printf("[%s]: solver - dt2 parameter wrong %.3f !!! Safe value of 0.2 set instead", _name_.c_str(), dt2);
     dt2 = 0.2;
   }
 
@@ -98,7 +97,7 @@ Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double
 
   qp_solver_.params.Bf[0] = dt;
 
-  ROS_INFO("[%s]: solver initialized", _name_.c_str());
+  printf("[%s]: solver initialized", _name_.c_str());
 }
 
 //}
@@ -137,7 +136,7 @@ bool Solver::setVelQ(double Q_vel) {
 
   if (Q_vel < 0.0) {
 
-    ROS_ERROR("[%s]: solver - Q vel has to be positive!! Q_vel = %.2f !!!", _name_.c_str(), Q_vel);
+    printf("[%s]: solver - Q vel has to be positive!! Q_vel = %.2f !!!", _name_.c_str(), Q_vel);
     return false;
 
   } else {
@@ -162,17 +161,17 @@ bool Solver::setQ(std::vector<double> Qnew) {
       if (Qnew[i] >= 0 && std::isfinite(Qnew[i])) {
         myQ_[i] = Qnew[i];
       } else {
-        ROS_ERROR("[%s]: solver - Q matrix has to be PSD - parameter #n %d !!!", _name_.c_str(), i);
+        printf("[%s]: solver - Q matrix has to be PSD - parameter #n %d !!!", _name_.c_str(), i);
         result = false;
       }
     }
 
   } else {
-    ROS_ERROR("[%s]: solver - wrong dimension received when setting Q", _name_.c_str());
+    printf("[%s]: solver - wrong dimension received when setting Q", _name_.c_str());
     result = false;
   }
   if (result) {
-    ROS_INFO("[%s]: solver - successfully set matrix Q", _name_.c_str());
+    printf("[%s]: solver - successfully set matrix Q", _name_.c_str());
   }
   return result;
 }

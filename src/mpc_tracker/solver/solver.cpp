@@ -1,12 +1,4 @@
-/* Produced by CVXGEN, 2018-11-06 10:21:31 -0500.  */
-/* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
-/* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
-/* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
-/* applications without prior written permission from Jacob Mattingley. */
-
-/* Filename: solver.c. */
-/* Description: Main solver file. */
-#include <mrs_mpc_solvers/tracker/solver/solver.h>
+#include <mrs_mpc_solvers/mpc_tracker/solver.h>
 
 namespace mrs_mpc_solvers
 {
@@ -616,6 +608,6 @@ long QPSolver::solve(void) {
   return iter;
 }
 
-}  // namespace tracker
+}  // namespace mpc_tracker
 
 }  // namespace mrs_mpc_solvers

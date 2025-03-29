@@ -1,5 +1,5 @@
-#ifndef QP_SOLVER_H
-#define QP_SOLVER_H
+#ifndef CONTROLLER_SOLVER_H
+#define CONTROLLER_SOLVER_H
 
 #include <stdio.h>
 #include <math.h>
