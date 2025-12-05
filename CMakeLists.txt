@@ -22,12 +22,7 @@ set(LIBRARIES
   MrsMpcSolvers_MpcTrackerSolver
   MrsMpcSolvers_MpcControllerSolver
   )
-
-include_directories(
-  include
-  ${rclcpp_INCLUDE_DIRS}
-  )
-
+  
 ## --------------------------------------------------------------
 ## |                       compile                              |
 ## --------------------------------------------------------------
@@ -41,6 +36,12 @@ add_library(MrsMpcSolvers_MpcTrackerSolver SHARED
   src/mpc_tracker/solver/solver.cpp
   src/mpc_tracker/solver/util.cpp
   )
+
+target_include_directories(MrsMpcSolvers_MpcTrackerSolver
+  PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+)
 
 ament_target_dependencies(MrsMpcSolvers_MpcTrackerSolver
   rclcpp
@@ -79,12 +80,12 @@ install(TARGETS
 )
 
 install(
-  DIRECTORY include
-  DESTINATION .
+  DIRECTORY include/
+  DESTINATION include/${PROJECT_NAME}
 )
 
 ament_export_include_directories(
-  include
+  include/${PROJECT_NAME}
 )
 
 ament_export_targets(
