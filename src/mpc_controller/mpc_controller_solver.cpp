@@ -14,6 +14,8 @@ namespace mpc_controller
 
 Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double> Q, std::vector<double> Q_last, double dt1, double dt2, double p1, double p2) {
 
+  memset(&qp_solver_, 0, sizeof(QPSolver));
+
   this->_name_ = name;
 
   this->Q_          = Q;

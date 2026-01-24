@@ -18,6 +18,8 @@ namespace mpc_tracker
 
 Solver::Solver(std::string name, bool verbose, int max_iters, std::vector<double> tempQ, double dt, double dt2, int dimension) {
 
+  memset(&qp_solver_, 0, sizeof(QPSolver));
+
   _name_ = name;
 
   myQ_ = std::vector<double>(4);
