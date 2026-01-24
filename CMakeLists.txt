@@ -22,7 +22,7 @@ set(LIBRARIES
   MrsMpcSolvers_MpcTrackerSolver
   MrsMpcSolvers_MpcControllerSolver
   )
-  
+
 ## --------------------------------------------------------------
 ## |                       compile                              |
 ## --------------------------------------------------------------
@@ -57,6 +57,12 @@ add_library(MrsMpcSolvers_MpcControllerSolver SHARED
   src/mpc_controller/solver/solver.cpp
   src/mpc_controller/solver/util.cpp
   )
+
+target_include_directories(MrsMpcSolvers_MpcControllerSolver
+  PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+)
 
 ament_target_dependencies(MrsMpcSolvers_MpcControllerSolver
   rclcpp
