@@ -2,7 +2,7 @@
 #define MPC_CONTROLLER_SOLVER_H
 
 #include <mrs_mpc_solvers/mpc_controller/solver.h>
-#include <eigen3/Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace mrs_mpc_solvers
 {

@@ -43,9 +43,10 @@ target_include_directories(MrsMpcSolvers_MpcTrackerSolver
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 
-ament_target_dependencies(MrsMpcSolvers_MpcTrackerSolver
-  rclcpp
-  Eigen3
+target_link_libraries(MrsMpcSolvers_MpcTrackerSolver
+  PRIVATE
+    rclcpp::rclcpp
+    Eigen3::Eigen
   )
 
 # MPC Controller
@@ -64,9 +65,10 @@ target_include_directories(MrsMpcSolvers_MpcControllerSolver
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 
-ament_target_dependencies(MrsMpcSolvers_MpcControllerSolver
-  rclcpp
-  Eigen3
+target_link_libraries(MrsMpcSolvers_MpcControllerSolver
+  PRIVATE
+    rclcpp::rclcpp
+    Eigen3::Eigen
   )
 
 ## --------------------------------------------------------------
