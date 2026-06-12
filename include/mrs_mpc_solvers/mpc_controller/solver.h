@@ -1,6 +1,7 @@
 #ifndef CONTROLLER_SOLVER_H
 #define CONTROLLER_SOLVER_H
 
+#include <ctime>
 #include <stdio.h>
 #include <math.h>
 #define pm(A, m, n) printmatrixd_controller(#A, A, m, n, 1)

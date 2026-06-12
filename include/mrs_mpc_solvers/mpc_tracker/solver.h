@@ -1,6 +1,7 @@
 #ifndef TRACKER_SOLVER_H
 #define TRACKER_SOLVER_H
 
+#include <ctime>
 #include <stdio.h>
 #include <math.h>
 #define pm(A, m, n) printmatrix(#A, A, m, n, 1)
